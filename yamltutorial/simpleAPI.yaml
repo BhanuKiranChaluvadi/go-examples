@@ -96,3 +96,45 @@ definitions:
         type: string
         example: TODO
         description: License of various software/hardware used while developing the urcap
+  Error:
+    description: api error
+    type: object
+    properties:
+      code:
+        type: string
+        example: missing_field
+        description: |
+          Error codes.This field contains a string succinctly identifying     the problem.
+      message:
+        type: string
+        example: The `first_name` field is required.
+        description: This field contain a plainly-written, developer-oriented explanation of the solution to the problem in complete, well-formed sentences.
+      more_info:
+        type: string
+        format: url
+        example: https://docs.api.example.com/v2/users/create_user#first_name
+        description: This field SHOULD contain a publicly-accessible URL where information about the error can be read in a web browser.
+      target:
+        $ref: '#/definitions/Error_target'
+  Error_target:
+    description: Error Target Model. This field MAY contain an error target model. Otherwise, it MUST be omitted.
+    type: object
+    properties:
+      type:
+        type: string
+        example: field
+        description: This field MUST contain field, parameter, or header
+        enum:
+        - field
+        - parameter
+        - header
+      name:
+        type: string
+        example: username
+        description: This field MUST contain the name of the problematic field (with dot-syntax if necessary), query parameter, or header.
+      value:
+        type: string
+        example: universal-robots
+    required:
+      - name
+      - value

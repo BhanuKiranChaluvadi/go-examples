@@ -24,7 +24,7 @@ type Manifest struct {
 	// Example: 1.0.0
 	// Required: true
 	// Pattern: ^[a-zA-Z0-9._-]+$
-	APIVersion string `json:"apiVersion" yaml:"apiVersion"`
+	APIVersion *string `json:"apiVersion" yaml:"apiVersion"`
 
 	// metadata
 	// Required: true
@@ -55,7 +55,7 @@ func (m *Manifest) validateAPIVersion(formats strfmt.Registry) error {
 		return err
 	}
 
-	if err := validate.Pattern("apiVersion", "body", m.APIVersion, `^[a-zA-Z0-9._-]+$`); err != nil {
+	if err := validate.Pattern("apiVersion", "body", *m.APIVersion, `^[a-zA-Z0-9._-]+$`); err != nil {
 		return err
 	}
 

@@ -1,4 +1,4 @@
-package main
+package load
 
 import (
 	"errors"
@@ -6,21 +6,17 @@ import (
 	"io"
 	"os"
 	"yamltutorial/models"
-	
-	openapiErrors "github.com/go-openapi/errors"
+
 	yamlErrors "yamltutorial/errors"
+
+	openapiErrors "github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
 	"gopkg.in/yaml.v3"
 )
 
-var (
-	// manifestFile string = "simple-manifest.yaml"
-	manifestFile string = "simple-error-manifest.yaml"
-)
-
-func main() {
+func Load(filePath string) (models.Manifest, error) {
 	// Open yaml File
-	yamlFile, err := os.Open(manifestFile)
+	yamlFile, err := os.Open(filePath)
 	if err != nil {
 		fmt.Println("Open error:", err)
 	}

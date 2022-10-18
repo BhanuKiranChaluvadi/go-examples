@@ -1,8 +1,7 @@
 apiVersion: v1.0
 metadata:
   vendorID: universal-robots
-  urcapID: hello-world
-  version: 1.0.0
+  version: 1.0
   vendorName: Universal Robots
   urcapName: Hello World
   contactInfo: Energivej 25, 5260 Odense S, Denmark

@@ -1,0 +1,45 @@
+definitions:
+    error:
+        description: Error Model
+        properties:
+            code:
+                description: Enumeration string succinctly identifying the problem
+                example: MetadataInvalid
+                type: string
+                x-go-name: Code
+            details:
+                description: A publicly-accessible URL where information about the error can be read in a web browser.
+                example: https://docs.api.example.com/v1/urcap/create_urcap#urcapID
+                type: string
+                x-go-name: Details
+            message:
+                description: Message is developer-oriented explanation of the solution to the problem
+                example: The `urcapID` field is required
+                type: string
+                x-go-name: Message
+            result:
+                format: int64
+                type: integer
+                x-go-name: Result
+            target:
+                $ref: '#/definitions/target'
+        type: object
+        x-go-name: Error
+        x-go-package: swaggertutorial/models
+    target:
+        properties:
+            name:
+                description: The name of the problematic field
+                example: urcapID
+                type: string
+                x-go-name: Name
+            type:
+                description: Enumeration of `field`, `parameter`, `header`
+                example: field
+                type: string
+                x-go-name: Type
+        type: object
+        x-go-name: Target
+        x-go-package: swaggertutorial/models
+paths: {}
+swagger: "2.0"
