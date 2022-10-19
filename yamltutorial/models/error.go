@@ -25,7 +25,7 @@ type Error struct {
 
 	// This field contain a plainly-written, developer-oriented explanation of the solution to the problem in complete, well-formed sentences.
 	// Example: The `first_name` field is required.
-	Message string `json:"message,omitempty" yaml:"message,omitempty"`
+	Message error `json:"message,omitempty" yaml:"message,omitempty"`
 
 	// This field SHOULD contain a publicly-accessible URL where information about the error can be read in a web browser.
 	// Example: https://docs.api.example.com/v2/users/create_user#first_name

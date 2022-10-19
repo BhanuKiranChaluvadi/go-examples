@@ -20,15 +20,15 @@ import (
 // swagger:model Error_target
 type ErrorTarget struct {
 
-	// This field MUST contain the name of the problematic field (with dot-syntax if necessary), query parameter, or header.
-	// Example: username
-	// Required: true
-	Name *string `json:"name" yaml:"name"`
-
 	// This field MUST contain field, parameter, or header
 	// Example: field
 	// Enum: [field parameter header]
 	Type string `json:"type,omitempty" yaml:"type,omitempty"`
+
+	// This field MUST contain the name of the problematic field (with dot-syntax if necessary), query parameter, or header.
+	// Example: username
+	// Required: true
+	Name *string `json:"name" yaml:"name"`
 
 	// value
 	// Example: universal-robots
@@ -40,11 +40,11 @@ type ErrorTarget struct {
 func (m *ErrorTarget) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateName(formats); err != nil {
+	if err := m.validateType(formats); err != nil {
 		res = append(res, err)
 	}
 
-	if err := m.validateType(formats); err != nil {
+	if err := m.validateName(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -55,15 +55,6 @@ func (m *ErrorTarget) Validate(formats strfmt.Registry) error {
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
-	return nil
-}
-
-func (m *ErrorTarget) validateName(formats strfmt.Registry) error {
-
-	if err := validate.Required("name", "body", m.Name); err != nil {
-		return err
-	}
-
 	return nil
 }
 
@@ -106,6 +97,15 @@ func (m *ErrorTarget) validateType(formats strfmt.Registry) error {
 
 	// value enum
 	if err := m.validateTypeEnum("type", "body", m.Type); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *ErrorTarget) validateName(formats strfmt.Registry) error {
+
+	if err := validate.Required("name", "body", m.Name); err != nil {
 		return err
 	}
 

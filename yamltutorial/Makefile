@@ -15,3 +15,6 @@ generate-server:
 		--strict-responders \
 		--strict-additional-properties \
 		--keep-spec-order
+
+serve-swagger:
+	swagger serve --port=42351 --no-open -F=swagger simpleAPI.yaml

@@ -27,11 +27,13 @@ definitions:
     type: object
     properties:
       apiVersion:
+        x-order: 0
         type: string
         example: 1.0.0
         description: "Version (major.minor.patch) of the Manifest specification used. Tools not implementing required version MUST reject the configuration file. \n"
         pattern: ^[a-zA-Z0-9._-]+$
       metadata:
+        x-order: 1
         $ref: '#/definitions/Metadata'
     required:
     - apiVersion
@@ -47,6 +49,7 @@ definitions:
     - version
     properties:
       vendorID:
+        x-order: 0
         type: string
         example: universal-robots
         description: |
@@ -55,6 +58,7 @@ definitions:
         maxLength: 27
         pattern: ^[a-zA-Z0-9._-]+$
       urcapID:
+        x-order: 1
         type: string
         example: dockerdaemon
         description: |
@@ -63,20 +67,23 @@ definitions:
         maxLength: 27
         pattern: ^[a-zA-Z0-9._-]+$
       version:
+        x-order: 2
         type: string
         example: 1.0.0
         description: |
           Urcap version (major.minor.patch)
         pattern: ^\d{1}.\d{1}.\d{1}$
       vendorName:
+        x-order: 3
         type: string
         example: Universal Robots
         description: |
           Urcap name of this application. This Will be displayed on user interface.
-        minLength: 2
+        minLength: 4
         maxLength: 27
         pattern: ^[a-zA-Z0-9_\-\s]+$
       urcapName:
+        x-order: 5
         type: string
         example: Docker Daemon
         description: |
@@ -85,14 +92,17 @@ definitions:
         maxLength: 20
         pattern: ^[a-zA-Z0-9_\-\s]+$
       description:
+        x-order: 6
         type: string
         example: Sample gripper URCap
         description: Short description of urcap
       copyright:
+        x-order: 7
         type: string
         example: Copyright (c) 2009-2021 Universal Robots. All rights reserved.
         description: Specifies copy rights for the urcap
       license:
+        x-order: 8
         type: string
         example: TODO
         description: License of various software/hardware used while developing the urcap
@@ -101,26 +111,35 @@ definitions:
     type: object
     properties:
       code:
+        x-order: 0
         type: string
         example: missing_field
         description: |
           Error codes.This field contains a string succinctly identifying     the problem.
       message:
+        x-order: 1
         type: string
+        x-go-type: 
+          type: error
+          hints:
+            kind: interface
         example: The `first_name` field is required.
         description: This field contain a plainly-written, developer-oriented explanation of the solution to the problem in complete, well-formed sentences.
       more_info:
+        x-order: 2
         type: string
         format: url
         example: https://docs.api.example.com/v2/users/create_user#first_name
         description: This field SHOULD contain a publicly-accessible URL where information about the error can be read in a web browser.
       target:
+        x-order: 3
         $ref: '#/definitions/Error_target'
   Error_target:
     description: Error Target Model. This field MAY contain an error target model. Otherwise, it MUST be omitted.
     type: object
     properties:
       type:
+        x-order: 0
         type: string
         example: field
         description: This field MUST contain field, parameter, or header
@@ -129,10 +148,12 @@ definitions:
         - parameter
         - header
       name:
+        x-order: 1
         type: string
         example: username
         description: This field MUST contain the name of the problematic field (with dot-syntax if necessary), query parameter, or header.
       value:
+        x-order: 2
         type: string
         example: universal-robots
     required:
