@@ -26,7 +26,7 @@ type Metadata struct {
 	// Max Length: 27
 	// Min Length: 2
 	// Pattern: ^[a-zA-Z0-9._-]+$
-	VendorID *string `json:"vendorID" yaml:"vendorID"`
+	VendorID string `json:"vendorID" yaml:"vendorID"`
 
 	// Urcap id for this application. The ID must be unique for each urcap application developed by a company (vendorID).
 	//
@@ -35,14 +35,14 @@ type Metadata struct {
 	// Max Length: 27
 	// Min Length: 2
 	// Pattern: ^[a-zA-Z0-9._-]+$
-	UrcapID *string `json:"urcapID" yaml:"urcapID"`
+	UrcapID string `json:"urcapID" yaml:"urcapID"`
 
 	// Urcap version (major.minor.patch)
 	//
 	// Example: 1.0.0
 	// Required: true
 	// Pattern: ^\d{1}.\d{1}.\d{1}$
-	Version *string `json:"version" yaml:"version"`
+	Version string `json:"version" yaml:"version"`
 
 	// Urcap name of this application. This Will be displayed on user interface.
 	//
@@ -51,7 +51,7 @@ type Metadata struct {
 	// Max Length: 27
 	// Min Length: 4
 	// Pattern: ^[a-zA-Z0-9_\-\s]+$
-	VendorName *string `json:"vendorName" yaml:"vendorName"`
+	VendorName string `json:"vendorName" yaml:"vendorName"`
 
 	// Urcap name of this application. This Will be displayed on user interface.
 	//
@@ -60,7 +60,7 @@ type Metadata struct {
 	// Max Length: 20
 	// Min Length: 3
 	// Pattern: ^[a-zA-Z0-9_\-\s]+$
-	UrcapName *string `json:"urcapName" yaml:"urcapName"`
+	UrcapName string `json:"urcapName" yaml:"urcapName"`
 
 	// Short description of urcap
 	// Example: Sample gripper URCap
@@ -107,19 +107,19 @@ func (m *Metadata) Validate(formats strfmt.Registry) error {
 
 func (m *Metadata) validateVendorID(formats strfmt.Registry) error {
 
-	if err := validate.Required("vendorID", "body", m.VendorID); err != nil {
+	if err := validate.RequiredString("vendorID", "body", m.VendorID); err != nil {
 		return err
 	}
 
-	if err := validate.MinLength("vendorID", "body", *m.VendorID, 2); err != nil {
+	if err := validate.MinLength("vendorID", "body", m.VendorID, 2); err != nil {
 		return err
 	}
 
-	if err := validate.MaxLength("vendorID", "body", *m.VendorID, 27); err != nil {
+	if err := validate.MaxLength("vendorID", "body", m.VendorID, 27); err != nil {
 		return err
 	}
 
-	if err := validate.Pattern("vendorID", "body", *m.VendorID, `^[a-zA-Z0-9._-]+$`); err != nil {
+	if err := validate.Pattern("vendorID", "body", m.VendorID, `^[a-zA-Z0-9._-]+$`); err != nil {
 		return err
 	}
 
@@ -128,19 +128,19 @@ func (m *Metadata) validateVendorID(formats strfmt.Registry) error {
 
 func (m *Metadata) validateUrcapID(formats strfmt.Registry) error {
 
-	if err := validate.Required("urcapID", "body", m.UrcapID); err != nil {
+	if err := validate.RequiredString("urcapID", "body", m.UrcapID); err != nil {
 		return err
 	}
 
-	if err := validate.MinLength("urcapID", "body", *m.UrcapID, 2); err != nil {
+	if err := validate.MinLength("urcapID", "body", m.UrcapID, 2); err != nil {
 		return err
 	}
 
-	if err := validate.MaxLength("urcapID", "body", *m.UrcapID, 27); err != nil {
+	if err := validate.MaxLength("urcapID", "body", m.UrcapID, 27); err != nil {
 		return err
 	}
 
-	if err := validate.Pattern("urcapID", "body", *m.UrcapID, `^[a-zA-Z0-9._-]+$`); err != nil {
+	if err := validate.Pattern("urcapID", "body", m.UrcapID, `^[a-zA-Z0-9._-]+$`); err != nil {
 		return err
 	}
 
@@ -149,11 +149,11 @@ func (m *Metadata) validateUrcapID(formats strfmt.Registry) error {
 
 func (m *Metadata) validateVersion(formats strfmt.Registry) error {
 
-	if err := validate.Required("version", "body", m.Version); err != nil {
+	if err := validate.RequiredString("version", "body", m.Version); err != nil {
 		return err
 	}
 
-	if err := validate.Pattern("version", "body", *m.Version, `^\d{1}.\d{1}.\d{1}$`); err != nil {
+	if err := validate.Pattern("version", "body", m.Version, `^\d{1}.\d{1}.\d{1}$`); err != nil {
 		return err
 	}
 
@@ -162,19 +162,19 @@ func (m *Metadata) validateVersion(formats strfmt.Registry) error {
 
 func (m *Metadata) validateVendorName(formats strfmt.Registry) error {
 
-	if err := validate.Required("vendorName", "body", m.VendorName); err != nil {
+	if err := validate.RequiredString("vendorName", "body", m.VendorName); err != nil {
 		return err
 	}
 
-	if err := validate.MinLength("vendorName", "body", *m.VendorName, 4); err != nil {
+	if err := validate.MinLength("vendorName", "body", m.VendorName, 4); err != nil {
 		return err
 	}
 
-	if err := validate.MaxLength("vendorName", "body", *m.VendorName, 27); err != nil {
+	if err := validate.MaxLength("vendorName", "body", m.VendorName, 27); err != nil {
 		return err
 	}
 
-	if err := validate.Pattern("vendorName", "body", *m.VendorName, `^[a-zA-Z0-9_\-\s]+$`); err != nil {
+	if err := validate.Pattern("vendorName", "body", m.VendorName, `^[a-zA-Z0-9_\-\s]+$`); err != nil {
 		return err
 	}
 
@@ -183,19 +183,19 @@ func (m *Metadata) validateVendorName(formats strfmt.Registry) error {
 
 func (m *Metadata) validateUrcapName(formats strfmt.Registry) error {
 
-	if err := validate.Required("urcapName", "body", m.UrcapName); err != nil {
+	if err := validate.RequiredString("urcapName", "body", m.UrcapName); err != nil {
 		return err
 	}
 
-	if err := validate.MinLength("urcapName", "body", *m.UrcapName, 3); err != nil {
+	if err := validate.MinLength("urcapName", "body", m.UrcapName, 3); err != nil {
 		return err
 	}
 
-	if err := validate.MaxLength("urcapName", "body", *m.UrcapName, 20); err != nil {
+	if err := validate.MaxLength("urcapName", "body", m.UrcapName, 20); err != nil {
 		return err
 	}
 
-	if err := validate.Pattern("urcapName", "body", *m.UrcapName, `^[a-zA-Z0-9_\-\s]+$`); err != nil {
+	if err := validate.Pattern("urcapName", "body", m.UrcapName, `^[a-zA-Z0-9_\-\s]+$`); err != nil {
 		return err
 	}
 

@@ -20,16 +20,19 @@ import (
 // swagger:model CompositeError
 type CompositeError struct {
 
-	// list of errors
-	// Required: true
-	Errors []*Error `json:"errors" yaml:"errors"`
+	// context of error
+	Context string `json:"context,omitempty" yaml:"context,omitempty"`
 
 	// http status code
 	Code uint32 `json:"code,omitempty" yaml:"code,omitempty"`
 
+	// list of errors
+	// Required: true
+	Errors []*Error `json:"errors" yaml:"errors"`
+
 	// combined string of all the errors
 	// Required: true
-	Message *string `json:"message" yaml:"message"`
+	Message string `json:"message" yaml:"message"`
 }
 
 // Validate validates this composite error
@@ -79,7 +82,7 @@ func (m *CompositeError) validateErrors(formats strfmt.Registry) error {
 
 func (m *CompositeError) validateMessage(formats strfmt.Registry) error {
 
-	if err := validate.Required("message", "body", m.Message); err != nil {
+	if err := validate.RequiredString("message", "body", m.Message); err != nil {
 		return err
 	}
 

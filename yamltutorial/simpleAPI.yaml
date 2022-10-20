@@ -27,11 +27,12 @@ definitions:
     type: object
     properties:
       apiVersion:
-        x-order: 0
         type: string
         example: 1.0.0
         description: "Version (major.minor.patch) of the Manifest specification used. Tools not implementing required version MUST reject the configuration file. \n"
         pattern: ^[a-zA-Z0-9._-]+$
+        x-order: 0
+        x-nullable: false
       metadata:
         x-order: 1
         $ref: '#/definitions/Metadata'
@@ -49,7 +50,6 @@ definitions:
     - version
     properties:
       vendorID:
-        x-order: 0
         type: string
         example: universal-robots
         description: |
@@ -57,8 +57,9 @@ definitions:
         minLength: 2
         maxLength: 27
         pattern: ^[a-zA-Z0-9._-]+$
+        x-order: 0
+        x-nullable: false
       urcapID:
-        x-order: 1
         type: string
         example: dockerdaemon
         description: |
@@ -66,15 +67,17 @@ definitions:
         minLength: 2
         maxLength: 27
         pattern: ^[a-zA-Z0-9._-]+$
+        x-order: 1
+        x-nullable: false
       version:
-        x-order: 2
         type: string
         example: 1.0.0
         description: |
           Urcap version (major.minor.patch)
         pattern: ^\d{1}.\d{1}.\d{1}$
+        x-order: 2
+        x-nullable: false
       vendorName:
-        x-order: 3
         type: string
         example: Universal Robots
         description: |
@@ -82,8 +85,9 @@ definitions:
         minLength: 4
         maxLength: 27
         pattern: ^[a-zA-Z0-9_\-\s]+$
+        x-order: 3
+        x-nullable: false
       urcapName:
-        x-order: 5
         type: string
         example: Docker Daemon
         description: |
@@ -91,33 +95,38 @@ definitions:
         minLength: 3
         maxLength: 20
         pattern: ^[a-zA-Z0-9_\-\s]+$
+        x-order: 5
+        x-nullable: false
       description:
-        x-order: 6
         type: string
         example: Sample gripper URCap
         description: Short description of urcap
+        x-order: 6
+        x-nullable: false
       copyright:
-        x-order: 7
         type: string
         example: Copyright (c) 2009-2021 Universal Robots. All rights reserved.
         description: Specifies copy rights for the urcap
+        x-order: 7
+        x-nullable: false
       license:
-        x-order: 8
         type: string
         example: TODO
         description: License of various software/hardware used while developing the urcap
+        x-order: 8
+        x-nullable: false
   Error:
     description: api error
     type: object
     properties:
       code:
-        x-order: 0
         type: string
         example: missing_field
         description: |
           Error codes.This field contains a string succinctly identifying     the problem.
+        x-order: 0
+        x-nullable: false
       message:
-        x-order: 1
         type: string
         x-go-type: 
           type: error
@@ -125,12 +134,15 @@ definitions:
             kind: interface
         example: The `first_name` field is required.
         description: This field contain a plainly-written, developer-oriented explanation of the solution to the problem in complete, well-formed sentences.
+        x-order: 1
+        x-nullable: false
       more_info:
-        x-order: 2
         type: string
         format: url
         example: https://docs.api.example.com/v2/users/create_user#first_name
         description: This field SHOULD contain a publicly-accessible URL where information about the error can be read in a web browser.
+        x-order: 2
+        x-nullable: false
       target:
         x-order: 3
         $ref: '#/definitions/ErrorTarget'
@@ -139,7 +151,6 @@ definitions:
     type: object
     properties:
       type:
-        x-order: 0
         type: string
         example: field
         description: This field MUST contain field, parameter, or header
@@ -147,15 +158,19 @@ definitions:
         - field
         - parameter
         - header
+        x-order: 0
+        x-nullable: false
       name:
-        x-order: 1
         type: string
         example: username
         description: This field MUST contain the name of the problematic field (with dot-syntax if necessary), query parameter, or header.
+        x-order: 1
+        x-nullable: false
       value:
-        x-order: 2
         type: string
         example: universal-robots
+        x-order: 2
+        x-nullable: false
     required:
       - name
       - value
@@ -163,21 +178,27 @@ definitions:
     description: composite error
     type: object
     properties:
-      errors:
+      context: 
+        description: context of error
+        type: string
         x-order: 0
-        description: list of errors
-        type: array
-        items:
-          $ref: '#/definitions/Error'
+        x-nullable: false
       code:
         x-order: 1
         description: http status code
         type: integer
         format: uint32
-      message:
+      errors:
         x-order: 2
+        description: list of errors
+        type: array
+        items:
+          $ref: '#/definitions/Error'
+      message:
+        x-order: 3
         description: combined string of all the errors
         type: string
+        x-nullable: false
     required:
       - errors
       - message

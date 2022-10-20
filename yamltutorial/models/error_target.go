@@ -28,12 +28,12 @@ type ErrorTarget struct {
 	// This field MUST contain the name of the problematic field (with dot-syntax if necessary), query parameter, or header.
 	// Example: username
 	// Required: true
-	Name *string `json:"name" yaml:"name"`
+	Name string `json:"name" yaml:"name"`
 
 	// value
 	// Example: universal-robots
 	// Required: true
-	Value *string `json:"value" yaml:"value"`
+	Value string `json:"value" yaml:"value"`
 }
 
 // Validate validates this error target
@@ -105,7 +105,7 @@ func (m *ErrorTarget) validateType(formats strfmt.Registry) error {
 
 func (m *ErrorTarget) validateName(formats strfmt.Registry) error {
 
-	if err := validate.Required("name", "body", m.Name); err != nil {
+	if err := validate.RequiredString("name", "body", m.Name); err != nil {
 		return err
 	}
 
@@ -114,7 +114,7 @@ func (m *ErrorTarget) validateName(formats strfmt.Registry) error {
 
 func (m *ErrorTarget) validateValue(formats strfmt.Registry) error {
 
-	if err := validate.Required("value", "body", m.Value); err != nil {
+	if err := validate.RequiredString("value", "body", m.Value); err != nil {
 		return err
 	}
 
