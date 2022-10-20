@@ -14,7 +14,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func Load(filePath string) (models.Manifest, error) {
+func Load(filePath string) (manifest *models.Manifest, err error) {
 	// Open yaml File
 	yamlFile, err := os.Open(filePath)
 	if err != nil {
@@ -28,14 +28,20 @@ func Load(filePath string) (models.Manifest, error) {
 		fmt.Println("Read error:", err)
 	}
 
-	var manifest models.Manifest
+	// var manifest models.Manifest
 	// we unmarshal our byteArray which contains our
 	// yamlFile's content into 'manifest' model
-	err = yaml.Unmarshal(byteValue, &manifest)
+	err = yaml.Unmarshal(byteValue, manifest)
 	if err != nil {
 		fmt.Println("yaml unmarshal error:", err)
 	}
 
+	// validate
+	err = Validate(manifest)
+	return
+}
+
+func Validate(manifest *models.Manifest) (err error) {
 	format := strfmt.Default
 	err = manifest.Validate(format)
 	if err != nil {
@@ -83,4 +89,20 @@ func Load(filePath string) (models.Manifest, error) {
 
 		}
 	}
+	manifest.Validate()
+	return nil
+}
+
+func formatErrors() (err error) {
+
+	return &models.Error{
+		Code:     "",
+		Message:  nil,
+		MoreInfo: "",
+		Target:   &models.ErrorTarget{},
+	}
+}
+
+func random() *models.Error {
+	return &models.Error{}
 }
