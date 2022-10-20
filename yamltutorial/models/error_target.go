@@ -17,7 +17,7 @@ import (
 
 // ErrorTarget Error Target Model. This field MAY contain an error target model. Otherwise, it MUST be omitted.
 //
-// swagger:model Error_target
+// swagger:model ErrorTarget
 type ErrorTarget struct {
 
 	// This field MUST contain field, parameter, or header
