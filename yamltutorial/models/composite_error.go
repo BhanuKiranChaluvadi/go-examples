@@ -29,10 +29,6 @@ type CompositeError struct {
 	// list of errors
 	// Required: true
 	Errors []*Error `json:"errors" yaml:"errors"`
-
-	// combined string of all the errors
-	// Required: true
-	Message string `json:"message" yaml:"message"`
 }
 
 // Validate validates this composite error
@@ -40,10 +36,6 @@ func (m *CompositeError) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateErrors(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateMessage(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -75,15 +67,6 @@ func (m *CompositeError) validateErrors(formats strfmt.Registry) error {
 			}
 		}
 
-	}
-
-	return nil
-}
-
-func (m *CompositeError) validateMessage(formats strfmt.Registry) error {
-
-	if err := validate.RequiredString("message", "body", m.Message); err != nil {
-		return err
 	}
 
 	return nil

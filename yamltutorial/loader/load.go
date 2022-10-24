@@ -4,7 +4,9 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"io/fs"
 	"os"
+	"syscall"
 	"yamltutorial/models"
 
 	yamlErrors "yamltutorial/errors"
@@ -14,18 +16,75 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func Load(filePath string) (manifest *models.Manifest, err error) {
+func ManifestLoad(filePath string) (manifest *models.Manifest, err error) {
 	// Open yaml File
 	yamlFile, err := os.Open(filePath)
 	if err != nil {
-		fmt.Println("Open error:", err)
+		var e *os.PathError
+		// convert to the corresponsing error type
+		if errors.As(err, &e) {
+			if errors.Is(e, fs.ErrNotExist) {
+				e := models.Error{
+					Code:     yamlErrors.ErrInvalidFile,
+					Message:  err,
+					MoreInfo: "",
+					Target: &models.ErrorTarget{
+						Type:  e.Op,
+						Value: e.Path,
+					},
+				}
+			} else if errors.Is(err, fs.ErrInvalid) {
+
+			} else {
+
+			}
+		}
+
+	}
+
+	if errors.Is(err, syscall.ENOSPC) {
+
+	} else if errors.Is(err, syscall.RTM_NR_MSGTYPES) {
+
+	}
+	if err != nil {
+		if errors.Is(err, ERREOF) {
+			return nil, &models.CompositeError{
+				Context: yamlErrors.ErrManifestOpen,
+				Code:    0,
+				Errors: []*models.Error{
+					&models.Error{
+						Code:     "",
+						Message:  err,
+						MoreInfo: "",
+						Target:   &models.ErrorTarget{},
+					},
+				},
+				Message: "",
+			}
+		} else {
+
+		}
+
+		return nil, &models.ContextError{
+			Context: yamlErrors.ErrManifestRead,
+			Err: &models.Error{
+				Code:     "",
+				Message:  err,
+				MoreInfo: "",
+				Target:   &models.ErrorTarget{},
+			},
+		}
 	}
 	defer yamlFile.Close()
 
 	// read opened yamlFile as a byte array.
 	byteValue, err := io.ReadAll(yamlFile)
 	if err != nil {
-		fmt.Println("Read error:", err)
+		return nil, &models.ContextError{
+			Context: yamlErrors.ErrManifestRead,
+			Err:     err,
+		}
 	}
 
 	// var manifest models.Manifest
@@ -33,12 +92,21 @@ func Load(filePath string) (manifest *models.Manifest, err error) {
 	// yamlFile's content into 'manifest' model
 	err = yaml.Unmarshal(byteValue, manifest)
 	if err != nil {
-		fmt.Println("yaml unmarshal error:", err)
+		return nil, &models.ContextError{
+			Context: yamlErrors.ErrFailedMarshal,
+			Err:     err,
+		}
 	}
 
 	// validate
 	err = Validate(manifest)
-	return
+	if err != nil {
+		return nil, &models.ContextError{
+			Context: yamlErrors.ErrManifestInvalid,
+			Err:     err,
+		}
+	}
+	return manifest, nil
 }
 
 func Validate(manifest *models.Manifest) (err error) {

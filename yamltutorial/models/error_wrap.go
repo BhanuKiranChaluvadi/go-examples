@@ -2,7 +2,6 @@ package models
 
 import (
 	"fmt"
-	"strings"
 )
 
 func (e *Error) Error() string {
@@ -13,17 +12,24 @@ func (e *Error) Unwrap() error {
 	return e.Message
 }
 
-func (c *CompositeError) Error() string {
-	if len(c.Errors) > 0 {
-		msgs := []string{c.Message + ":"}
-		for _, e := range c.Errors {
-			msgs = append(msgs, e.Error())
-		}
-		return strings.Join(msgs, "\n")
-	}
-	return c.message
+/*
+ * context error
+ */
+func (e *ContextError) Error() string {
+	return fmt.Sprintf("error: %s", e.Err)
 }
 
-func (c *CompositeError) Unwrap() error {
-	return nil
+func (e *ContextError) Unwrap() error {
+	return e.Err
+}
+
+func (e *ContextError) GetContext() string {
+	return e.Context
+}
+
+/*
+ * composite error
+ */
+func (e *CompositeError) Error() string {
+
 }

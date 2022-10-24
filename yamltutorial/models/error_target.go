@@ -22,16 +22,12 @@ type ErrorTarget struct {
 
 	// This field MUST contain field, parameter, or header
 	// Example: field
+	// Required: true
 	// Enum: [field parameter header]
-	Type string `json:"type,omitempty" yaml:"type,omitempty"`
+	Type string `json:"type" yaml:"type"`
 
 	// This field MUST contain the name of the problematic field (with dot-syntax if necessary), query parameter, or header.
 	// Example: username
-	// Required: true
-	Name string `json:"name" yaml:"name"`
-
-	// value
-	// Example: universal-robots
 	// Required: true
 	Value string `json:"value" yaml:"value"`
 }
@@ -41,10 +37,6 @@ func (m *ErrorTarget) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateType(formats); err != nil {
-		res = append(res, err)
-	}
-
-	if err := m.validateName(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -91,21 +83,13 @@ func (m *ErrorTarget) validateTypeEnum(path, location string, value string) erro
 }
 
 func (m *ErrorTarget) validateType(formats strfmt.Registry) error {
-	if swag.IsZero(m.Type) { // not required
-		return nil
+
+	if err := validate.RequiredString("type", "body", m.Type); err != nil {
+		return err
 	}
 
 	// value enum
 	if err := m.validateTypeEnum("type", "body", m.Type); err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (m *ErrorTarget) validateName(formats strfmt.Registry) error {
-
-	if err := validate.RequiredString("name", "body", m.Name); err != nil {
 		return err
 	}
 
