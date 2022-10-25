@@ -18,7 +18,7 @@ var (
 
 func main() {
 
-	_, err := load.Load(manifestFile)
+	_, err := load.ManifestLoad(manifestFile)
 
 	// try and unwrap
 	fmt.Println("Unwrapping validation error")

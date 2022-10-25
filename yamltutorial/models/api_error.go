@@ -200,3 +200,4 @@ func (m *APIError) UnmarshalBinary(b []byte) error {
 	*m = res
 	return nil
 }
+
