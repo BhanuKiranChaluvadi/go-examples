@@ -24,7 +24,7 @@ type ErrorTarget struct {
 	// Example: field
 	// Required: true
 	// Enum: [field parameter header]
-	Type string `json:"type" yaml:"type"`
+	Name string `json:"name" yaml:"name"`
 
 	// This field MUST contain the name of the problematic field (with dot-syntax if necessary), query parameter, or header.
 	// Example: username
@@ -36,7 +36,7 @@ type ErrorTarget struct {
 func (m *ErrorTarget) Validate(formats strfmt.Registry) error {
 	var res []error
 
-	if err := m.validateType(formats); err != nil {
+	if err := m.validateName(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -50,7 +50,7 @@ func (m *ErrorTarget) Validate(formats strfmt.Registry) error {
 	return nil
 }
 
-var errorTargetTypeTypePropEnum []interface{}
+var errorTargetTypeNamePropEnum []interface{}
 
 func init() {
 	var res []string
@@ -58,38 +58,38 @@ func init() {
 		panic(err)
 	}
 	for _, v := range res {
-		errorTargetTypeTypePropEnum = append(errorTargetTypeTypePropEnum, v)
+		errorTargetTypeNamePropEnum = append(errorTargetTypeNamePropEnum, v)
 	}
 }
 
 const (
 
-	// ErrorTargetTypeField captures enum value "field"
-	ErrorTargetTypeField string = "field"
+	// ErrorTargetNameField captures enum value "field"
+	ErrorTargetNameField string = "field"
 
-	// ErrorTargetTypeParameter captures enum value "parameter"
-	ErrorTargetTypeParameter string = "parameter"
+	// ErrorTargetNameParameter captures enum value "parameter"
+	ErrorTargetNameParameter string = "parameter"
 
-	// ErrorTargetTypeHeader captures enum value "header"
-	ErrorTargetTypeHeader string = "header"
+	// ErrorTargetNameHeader captures enum value "header"
+	ErrorTargetNameHeader string = "header"
 )
 
 // prop value enum
-func (m *ErrorTarget) validateTypeEnum(path, location string, value string) error {
-	if err := validate.EnumCase(path, location, value, errorTargetTypeTypePropEnum, true); err != nil {
+func (m *ErrorTarget) validateNameEnum(path, location string, value string) error {
+	if err := validate.EnumCase(path, location, value, errorTargetTypeNamePropEnum, true); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (m *ErrorTarget) validateType(formats strfmt.Registry) error {
+func (m *ErrorTarget) validateName(formats strfmt.Registry) error {
 
-	if err := validate.RequiredString("type", "body", m.Type); err != nil {
+	if err := validate.RequiredString("name", "body", m.Name); err != nil {
 		return err
 	}
 
 	// value enum
-	if err := m.validateTypeEnum("type", "body", m.Type); err != nil {
+	if err := m.validateNameEnum("name", "body", m.Name); err != nil {
 		return err
 	}
 
