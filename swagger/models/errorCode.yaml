@@ -1,0 +1,8 @@
+type: object
+properties:
+  major:
+    description: API context
+    type: integer
+  minor:
+    description: error context
+    type: integer

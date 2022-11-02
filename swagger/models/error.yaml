@@ -1,0 +1,30 @@
+description: api error
+type: object
+properties:
+  code:
+    type: string
+    example: missing_field
+    description: |
+      Error codes.This field contains a string succinctly identifying     the problem.
+    x-order: 0
+    x-nullable: false
+  message:
+    type: string
+    x-go-type: 
+      type: error
+      hints:
+        kind: interface
+    example: The `first_name` field is required.
+    description: This field contain a plainly-written, developer-oriented explanation of the solution to the problem in complete, well-formed sentences.
+    x-order: 1
+    x-nullable: false
+  more_info:
+    type: string
+    format: url
+    example: https://docs.api.example.com/v2/users/create_user#first_name
+    description: This field SHOULD contain a publicly-accessible URL where information about the error can be read in a web browser.
+    x-order: 2
+    x-nullable: false
+  target:
+    x-order: 3
+    $ref: 'errorTarget.yaml'

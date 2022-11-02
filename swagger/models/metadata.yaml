@@ -1,0 +1,75 @@
+description: Metadata of the urcap
+type: object
+properties:
+  vendorID:
+    type: string
+    example: universal-robots
+    description: |
+      Company urcap developer ID. The ID is shared among all urcap applications developed by company.
+    minLength: 2
+    maxLength: 27
+    pattern: ^[a-zA-Z0-9._-]+$
+    x-order: 0
+    x-nullable: false
+  urcapID:
+    type: string
+    example: dockerdaemon
+    description: |
+      Urcap id for this application. The ID must be unique for each urcap application developed by a company (vendorID).
+    minLength: 2
+    maxLength: 27
+    pattern: ^[a-zA-Z0-9._-]+$
+    x-order: 1
+    x-nullable: false
+  version:
+    type: string
+    example: 1.0.0
+    description: |
+      Urcap version (major.minor.patch)
+    pattern: ^\d{1}.\d{1}.\d{1}$
+    x-order: 2
+    x-nullable: false
+  vendorName:
+    type: string
+    example: Universal Robots
+    description: |
+      Urcap name of this application. This Will be displayed on user interface.
+    minLength: 4
+    maxLength: 27
+    pattern: ^[a-zA-Z0-9_\-\s]+$
+    x-order: 3
+    x-nullable: false
+  urcapName:
+    type: string
+    example: Docker Daemon
+    description: |
+      Urcap name of this application. This Will be displayed on user interface.
+    minLength: 3
+    maxLength: 20
+    pattern: ^[a-zA-Z0-9_\-\s]+$
+    x-order: 5
+    x-nullable: false
+  description:
+    type: string
+    example: Sample gripper URCap
+    description: Short description of urcap
+    x-order: 6
+    x-nullable: false
+  copyright:
+    type: string
+    example: Copyright (c) 2009-2021 Universal Robots. All rights reserved.
+    description: Specifies copy rights for the urcap
+    x-order: 7
+    x-nullable: false
+  license:
+    type: string
+    example: TODO
+    description: License of various software/hardware used while developing the urcap
+    x-order: 8
+    x-nullable: false
+required:
+  - vendorID
+  - urcapID
+  - urcapName
+  - vendorName
+  - version

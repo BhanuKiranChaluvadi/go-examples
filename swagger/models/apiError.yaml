@@ -1,0 +1,45 @@
+type: object
+properties:
+  trace:
+    description: The UUID to uniquely identifying the request
+    type: string
+    example: 9daee671-916a-4678-850b-10b911f0236d
+    x-order: 0
+  statusCode:
+    description: HTTP status code used for the response
+    type: integer
+    format: uint16
+    example: 500
+    x-order: 1
+  errorCode:
+    $ref: 'errorCode.yaml'
+    x-order: 2
+  errorContext:
+    description: This field contains a snake case string succiently identifying the problem from api context.
+    type: string
+    example: installation_failed
+    x-order: 3
+    x-nullable: false
+  description:
+    description: This field contains description of the problem
+    type: string
+    x-order: 4
+  resolve:
+    description: This field explains a possible solution to the problem
+    type: string
+    example: Please download urcapx file again and try installing again or contact urcap developer
+    x-order: 5
+  moreInfo:
+    description: This filed contains a publicly-accessible URL where information about the error can be read in a web browser
+    type: string
+    format: url
+    example: https://docs.api.example.com/v2/urcaps/installation#corrupted_file
+    x-order: 6
+  errors:
+    description: List of errors
+    type: array
+    items:
+      $ref: 'error.yaml'
+required:
+  - apiContext
+  - errors

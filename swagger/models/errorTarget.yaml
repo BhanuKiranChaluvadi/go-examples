@@ -1,0 +1,22 @@
+description: Error Target Model. This field MAY contain an error target model. Otherwise, it MUST be omitted.
+type: object
+properties:
+  name:
+    type: string
+    example: field
+    description: This field MUST contain field, parameter, or header
+    enum:
+    - field
+    - parameter
+    - header
+    x-order: 0
+    x-nullable: false
+  value:
+    type: string
+    example: username
+    description: This field MUST contain the name of the problematic field (with dot-syntax if necessary), query parameter, or header.
+    x-order: 1
+    x-nullable: false
+required:
+  - name
+  - value

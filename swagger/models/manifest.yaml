@@ -1,0 +1,17 @@
+description: |
+  URCap Manifest Specification. The Manifest file is a YAML file defining a multi-artifacts based urcap application. The Manifest.yaml file is located on the top level directory/folder.
+type: object
+properties:
+  apiVersion:
+    type: string
+    example: 1.0.0
+    description: "Version (major.minor.patch) of the Manifest specification used. Tools not implementing required version MUST reject the configuration file. \n"
+    pattern: ^[a-zA-Z0-9._-]+$
+    x-order: 0
+    x-nullable: false
+  metadata:
+    x-order: 1
+    $ref: 'metadata.yaml'
+required:
+- apiVersion
+- metadata
