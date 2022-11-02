@@ -6,7 +6,9 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"strconv"
 
 	"github.com/go-openapi/errors"
@@ -29,6 +31,33 @@ type CompositeError struct {
 	// list of errors
 	// Required: true
 	Errors []*Error `json:"errors" yaml:"errors"`
+}
+
+// UnmarshalJSON unmarshals this object while disallowing additional properties from JSON
+func (m *CompositeError) UnmarshalJSON(data []byte) error {
+	var props struct {
+
+		// context of error
+		Context string `json:"context,omitempty" yaml:"context,omitempty"`
+
+		// http status code
+		Code uint32 `json:"code,omitempty" yaml:"code,omitempty"`
+
+		// list of errors
+		// Required: true
+		Errors []*Error `json:"errors" yaml:"errors"`
+	}
+
+	dec := json.NewDecoder(bytes.NewReader(data))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&props); err != nil {
+		return err
+	}
+
+	m.Context = props.Context
+	m.Code = props.Code
+	m.Errors = props.Errors
+	return nil
 }
 
 // Validate validates this composite error

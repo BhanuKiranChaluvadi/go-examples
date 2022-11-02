@@ -6,7 +6,9 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"strconv"
 
 	"github.com/go-openapi/errors"
@@ -50,6 +52,59 @@ type APIError struct {
 	// List of errors
 	// Required: true
 	Errors []*Error `json:"errors" yaml:"errors"`
+}
+
+// UnmarshalJSON unmarshals this object while disallowing additional properties from JSON
+func (m *APIError) UnmarshalJSON(data []byte) error {
+	var props struct {
+
+		// The UUID to uniquely identifying the request
+		// Example: 9daee671-916a-4678-850b-10b911f0236d
+		Trace string `json:"trace,omitempty" yaml:"trace,omitempty"`
+
+		// HTTP status code used for the response
+		// Example: 500
+		StatusCode uint16 `json:"statusCode,omitempty" yaml:"statusCode,omitempty"`
+
+		// translation code
+		TranslationCode *TranslationCode `json:"translationCode,omitempty" yaml:"translationCode,omitempty"`
+
+		// This field contains a snake case string succiently identifying the problem from api context.
+		// Example: installation_failed
+		// Required: true
+		APIContext string `json:"apiContext" yaml:"apiContext"`
+
+		// This field contains description of the problem
+		Description string `json:"description,omitempty" yaml:"description,omitempty"`
+
+		// This field explains a possible solution to the problem
+		// Example: Please download urcapx file again and try installing again or contact urcap developer
+		Resolve string `json:"resolve,omitempty" yaml:"resolve,omitempty"`
+
+		// This filed contains a publicly-accessible URL where information about the error can be read in a web browser
+		// Example: https://docs.api.example.com/v2/urcaps/installation#corrupted_file
+		MoreInfo string `json:"moreInfo,omitempty" yaml:"moreInfo,omitempty"`
+
+		// List of errors
+		// Required: true
+		Errors []*Error `json:"errors" yaml:"errors"`
+	}
+
+	dec := json.NewDecoder(bytes.NewReader(data))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&props); err != nil {
+		return err
+	}
+
+	m.Trace = props.Trace
+	m.StatusCode = props.StatusCode
+	m.TranslationCode = props.TranslationCode
+	m.APIContext = props.APIContext
+	m.Description = props.Description
+	m.Resolve = props.Resolve
+	m.MoreInfo = props.MoreInfo
+	m.Errors = props.Errors
+	return nil
 }
 
 // Validate validates this API error
@@ -200,4 +255,3 @@ func (m *APIError) UnmarshalBinary(b []byte) error {
 	*m = res
 	return nil
 }
-

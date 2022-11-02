@@ -6,7 +6,9 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
@@ -29,6 +31,33 @@ type Manifest struct {
 	// metadata
 	// Required: true
 	Metadata *Metadata `json:"metadata" yaml:"metadata"`
+}
+
+// UnmarshalJSON unmarshals this object while disallowing additional properties from JSON
+func (m *Manifest) UnmarshalJSON(data []byte) error {
+	var props struct {
+
+		// Version (major.minor.patch) of the Manifest specification used. Tools not implementing required version MUST reject the configuration file.
+		//
+		// Example: 1.0.0
+		// Required: true
+		// Pattern: ^[a-zA-Z0-9._-]+$
+		APIVersion string `json:"apiVersion" yaml:"apiVersion"`
+
+		// metadata
+		// Required: true
+		Metadata *Metadata `json:"metadata" yaml:"metadata"`
+	}
+
+	dec := json.NewDecoder(bytes.NewReader(data))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&props); err != nil {
+		return err
+	}
+
+	m.APIVersion = props.APIVersion
+	m.Metadata = props.Metadata
+	return nil
 }
 
 // Validate validates this manifest

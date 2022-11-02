@@ -6,6 +6,7 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 
@@ -30,6 +31,33 @@ type ErrorTarget struct {
 	// Example: username
 	// Required: true
 	Value string `json:"value" yaml:"value"`
+}
+
+// UnmarshalJSON unmarshals this object while disallowing additional properties from JSON
+func (m *ErrorTarget) UnmarshalJSON(data []byte) error {
+	var props struct {
+
+		// This field MUST contain field, parameter, or header
+		// Example: field
+		// Required: true
+		// Enum: [field parameter header]
+		Name string `json:"name" yaml:"name"`
+
+		// This field MUST contain the name of the problematic field (with dot-syntax if necessary), query parameter, or header.
+		// Example: username
+		// Required: true
+		Value string `json:"value" yaml:"value"`
+	}
+
+	dec := json.NewDecoder(bytes.NewReader(data))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&props); err != nil {
+		return err
+	}
+
+	m.Name = props.Name
+	m.Value = props.Value
+	return nil
 }
 
 // Validate validates this error target

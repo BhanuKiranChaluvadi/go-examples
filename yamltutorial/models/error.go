@@ -6,7 +6,9 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
@@ -33,6 +35,40 @@ type Error struct {
 
 	// target
 	Target *ErrorTarget `json:"target,omitempty" yaml:"target,omitempty"`
+}
+
+// UnmarshalJSON unmarshals this object while disallowing additional properties from JSON
+func (m *Error) UnmarshalJSON(data []byte) error {
+	var props struct {
+
+		// Error codes.This field contains a string succinctly identifying     the problem.
+		//
+		// Example: missing_field
+		Code string `json:"code,omitempty" yaml:"code,omitempty"`
+
+		// This field contain a plainly-written, developer-oriented explanation of the solution to the problem in complete, well-formed sentences.
+		// Example: The `first_name` field is required.
+		Message error `json:"message,omitempty" yaml:"message,omitempty"`
+
+		// This field SHOULD contain a publicly-accessible URL where information about the error can be read in a web browser.
+		// Example: https://docs.api.example.com/v2/users/create_user#first_name
+		MoreInfo string `json:"more_info,omitempty" yaml:"more_info,omitempty"`
+
+		// target
+		Target *ErrorTarget `json:"target,omitempty" yaml:"target,omitempty"`
+	}
+
+	dec := json.NewDecoder(bytes.NewReader(data))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&props); err != nil {
+		return err
+	}
+
+	m.Code = props.Code
+	m.Message = props.Message
+	m.MoreInfo = props.MoreInfo
+	m.Target = props.Target
+	return nil
 }
 
 // Validate validates this error

@@ -6,7 +6,9 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 
 	"github.com/go-openapi/errors"
 	"github.com/go-openapi/strfmt"
@@ -73,6 +75,83 @@ type Metadata struct {
 	// License of various software/hardware used while developing the urcap
 	// Example: TODO
 	License string `json:"license,omitempty" yaml:"license,omitempty"`
+}
+
+// UnmarshalJSON unmarshals this object while disallowing additional properties from JSON
+func (m *Metadata) UnmarshalJSON(data []byte) error {
+	var props struct {
+
+		// Company urcap developer ID. The ID is shared among all urcap applications developed by company.
+		//
+		// Example: universal-robots
+		// Required: true
+		// Max Length: 27
+		// Min Length: 2
+		// Pattern: ^[a-zA-Z0-9._-]+$
+		VendorID string `json:"vendorID" yaml:"vendorID"`
+
+		// Urcap id for this application. The ID must be unique for each urcap application developed by a company (vendorID).
+		//
+		// Example: dockerdaemon
+		// Required: true
+		// Max Length: 27
+		// Min Length: 2
+		// Pattern: ^[a-zA-Z0-9._-]+$
+		UrcapID string `json:"urcapID" yaml:"urcapID"`
+
+		// Urcap version (major.minor.patch)
+		//
+		// Example: 1.0.0
+		// Required: true
+		// Pattern: ^\d{1}.\d{1}.\d{1}$
+		Version string `json:"version" yaml:"version"`
+
+		// Urcap name of this application. This Will be displayed on user interface.
+		//
+		// Example: Universal Robots
+		// Required: true
+		// Max Length: 27
+		// Min Length: 4
+		// Pattern: ^[a-zA-Z0-9_\-\s]+$
+		VendorName string `json:"vendorName" yaml:"vendorName"`
+
+		// Urcap name of this application. This Will be displayed on user interface.
+		//
+		// Example: Docker Daemon
+		// Required: true
+		// Max Length: 20
+		// Min Length: 3
+		// Pattern: ^[a-zA-Z0-9_\-\s]+$
+		UrcapName string `json:"urcapName" yaml:"urcapName"`
+
+		// Short description of urcap
+		// Example: Sample gripper URCap
+		Description string `json:"description,omitempty" yaml:"description,omitempty"`
+
+		// Specifies copy rights for the urcap
+		// Example: Copyright (c) 2009-2021 Universal Robots. All rights reserved.
+		Copyright string `json:"copyright,omitempty" yaml:"copyright,omitempty"`
+
+		// License of various software/hardware used while developing the urcap
+		// Example: TODO
+		License string `json:"license,omitempty" yaml:"license,omitempty"`
+	}
+
+	dec := json.NewDecoder(bytes.NewReader(data))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&props); err != nil {
+		return err
+	}
+
+	m.VendorID = props.VendorID
+	m.UrcapID = props.UrcapID
+	m.Version = props.Version
+	m.VendorName = props.VendorName
+	m.UrcapName = props.UrcapName
+	m.Description = props.Description
+	m.Copyright = props.Copyright
+	m.License = props.License
+	return nil
 }
 
 // Validate validates this metadata

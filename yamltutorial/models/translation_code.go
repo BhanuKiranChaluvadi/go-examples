@@ -6,7 +6,9 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -22,6 +24,28 @@ type TranslationCode struct {
 
 	// error context
 	Minor int64 `json:"minor,omitempty" yaml:"minor,omitempty"`
+}
+
+// UnmarshalJSON unmarshals this object while disallowing additional properties from JSON
+func (m *TranslationCode) UnmarshalJSON(data []byte) error {
+	var props struct {
+
+		// API context
+		Major int64 `json:"major,omitempty" yaml:"major,omitempty"`
+
+		// error context
+		Minor int64 `json:"minor,omitempty" yaml:"minor,omitempty"`
+	}
+
+	dec := json.NewDecoder(bytes.NewReader(data))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&props); err != nil {
+		return err
+	}
+
+	m.Major = props.Major
+	m.Minor = props.Minor
+	return nil
 }
 
 // Validate validates this translation code

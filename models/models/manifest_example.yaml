@@ -1,0 +1,40 @@
+apiVersion: v1.0
+metadata:
+  urcapID: hello-world
+  urcapName: Hello World
+  vendorID: universal-robots
+  vendorName: Universal Robots
+  version: v1.0
+  contactInfo: Energivej 25, 5260 Odense S, Denmark
+  description: Daemon Sample URCap
+  copyright: Copyright (c) 2009-2021 Universal Robots. All rights reserved.
+  licenseType: Sample license
+artifacts:
+  containers:
+  - name: container_1
+    image: /container_1/image
+    ports:
+    - name: http
+      containerPort: 80
+      protocol: TCP
+    - name: https
+      containerPort: 443
+      protocol: TCP
+    volumeMounts:
+    - mountPath: /mount
+  - name: container_2
+    image: /container_2/image
+    ports:
+    - name: http
+      containerPort: 80
+      protocol: TCP
+    volumeMounts:
+    - mountPath: /mount
+  polyscopeBundles:
+  - name: polyscopebundle_1
+    bundle: polyscopebundle_1-1.0-SNAPSHOT.jar
+  - name: polyscopebundle_2
+    bundle: polyscopebundle_2-1.0-SNAPSHOT.jar
+  webArchives:
+  - name: webarchive_1
+    folder: webarchive_1

@@ -6,7 +6,9 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -22,6 +24,28 @@ type ErrorCode struct {
 
 	// field
 	Field string `json:"field,omitempty" yaml:"field,omitempty"`
+}
+
+// UnmarshalJSON unmarshals this object while disallowing additional properties from JSON
+func (m *ErrorCode) UnmarshalJSON(data []byte) error {
+	var props struct {
+
+		// code
+		Code int64 `json:"code,omitempty" yaml:"code,omitempty"`
+
+		// field
+		Field string `json:"field,omitempty" yaml:"field,omitempty"`
+	}
+
+	dec := json.NewDecoder(bytes.NewReader(data))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&props); err != nil {
+		return err
+	}
+
+	m.Code = props.Code
+	m.Field = props.Field
+	return nil
 }
 
 // Validate validates this error code

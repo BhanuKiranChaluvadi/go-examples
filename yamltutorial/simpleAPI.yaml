@@ -272,5 +272,17 @@ definitions:
       minor:
         description: error context
         type: integer
+  ErrCode:
+    type: object
+    properties:
+      code:
+        type: integer
+      value:
+        type: string
+    enum:
+      - code: 1001
+        value: failed_installation
+      - code: 1020
+        value: failed_info
 
         

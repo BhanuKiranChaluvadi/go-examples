@@ -1,0 +1,98 @@
+swagger: "2.0"
+info:
+  title: Sample API
+  description: API description in Markdown.
+  version: 1.0.0
+
+host: api.example.com
+basePath: /v1
+schemes:
+  - https
+
+paths:
+  /users:
+    get:
+      summary: Returns a list of users.
+      description: Optional extended description in Markdown.
+      produces:
+        - application/json
+      responses:
+        200:
+          description: OK
+
+definitions:
+  Manifest:
+    description: |
+      URCap Manifest Specification. The Manifest file is a YAML file defining a multi-artifacts based urcap application. The Manifest.yaml file is located on the top level directory/folder.
+    type: object
+    properties:
+      apiVersion:
+        type: string
+        example: 1.0.0
+        description: "Version (major.minor.patch) of the Manifest specification used. Tools not implementing required version MUST reject the configuration file. \n"
+        pattern: ^[a-zA-Z0-9._-]+$
+      metadata:
+        $ref: '#/definitions/Metadata'
+    required:
+    - apiVersion
+    - metadata
+  Metadata:
+    description: Metadata of the urcap
+    type: object
+    required:
+    - urcapID
+    - urcapName
+    - vendorID
+    - vendorName
+    - version
+    properties:
+      vendorID:
+        type: string
+        example: universal-robots
+        description: |
+          Company urcap developer ID. The ID is shared among all urcap applications developed by company.
+        minLength: 2
+        maxLength: 27
+        pattern: ^[a-zA-Z0-9._-]+$
+      urcapID:
+        type: string
+        example: dockerdaemon
+        description: |
+          Urcap id for this application. The ID must be unique for each urcap application developed by a company (vendorID).
+        minLength: 2
+        maxLength: 27
+        pattern: ^[a-zA-Z0-9._-]+$
+      version:
+        type: string
+        example: 1.0.0
+        description: |
+          Urcap version (major.minor.patch)
+        pattern: ^\d{1}.\d{1}.\d{1}$
+      vendorName:
+        type: string
+        example: Universal Robots
+        description: |
+          Urcap name of this application. This Will be displayed on user interface.
+        minLength: 2
+        maxLength: 27
+        pattern: ^[a-zA-Z0-9_\-\s]+$
+      urcapName:
+        type: string
+        example: Docker Daemon
+        description: |
+          Urcap name of this application. This Will be displayed on user interface.
+        minLength: 3
+        maxLength: 20
+        pattern: ^[a-zA-Z0-9_\-\s]+$
+      description:
+        type: string
+        example: Sample gripper URCap
+        description: Short description of urcap
+      copyright:
+        type: string
+        example: Copyright (c) 2009-2021 Universal Robots. All rights reserved.
+        description: Specifies copy rights for the urcap
+      license:
+        type: string
+        example: TODO
+        description: License of various software/hardware used while developing the urcap

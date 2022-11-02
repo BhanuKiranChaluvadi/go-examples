@@ -6,7 +6,9 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
@@ -22,6 +24,28 @@ type ContextError struct {
 
 	// actual error
 	Err error `json:"err,omitempty" yaml:"err,omitempty"`
+}
+
+// UnmarshalJSON unmarshals this object while disallowing additional properties from JSON
+func (m *ContextError) UnmarshalJSON(data []byte) error {
+	var props struct {
+
+		// context of the error
+		Context string `json:"context,omitempty" yaml:"context,omitempty"`
+
+		// actual error
+		Err error `json:"err,omitempty" yaml:"err,omitempty"`
+	}
+
+	dec := json.NewDecoder(bytes.NewReader(data))
+	dec.DisallowUnknownFields()
+	if err := dec.Decode(&props); err != nil {
+		return err
+	}
+
+	m.Context = props.Context
+	m.Err = props.Err
+	return nil
 }
 
 // Validate validates this context error

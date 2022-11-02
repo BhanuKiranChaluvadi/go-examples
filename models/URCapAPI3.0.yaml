@@ -1,0 +1,1015 @@
+openapi: 3.0.0
+info:
+  description: API description for URCaps.
+  version: 1.0-oas3
+  title: urcap API
+  contact:
+    name: Universal Robots
+    url: https://www.universal-robots.com/
+    email: swpl@universal-robots.com
+  license:
+    name: Apache '2.0'
+    url: http://www.apache.org/licenses/LICENSE
+tags:
+  - name: urcap
+    description: Operations available on urcap
+  - name: artifact
+    description: Operations available on artifact
+  - name: container
+    description: Operations available on container
+  - name: webArchive
+    description: Operations available on web archive
+  - name: polyscopeBundle
+    description: Operations available on polyscope bundle
+paths:
+  /urcaps:
+    get:
+      tags:
+        - urcap
+      summary: Gets all urcaps.
+      description: |
+        This operation provides a view of installed urcaps's data in JSON.
+      operationId: getUrcaps
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Manifest'
+    post:
+      tags:
+        - urcap
+      summary: Adds a new urcap
+      description: |
+        This operation install urcaps from a zipped urcap file. This operation 
+        expects zipped .urcapx file to be uploaded as form data.
+      operationId: addUrcap
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                urcapxFile:
+                  description: |
+                    The zipped urcapx file.
+                  type: string
+                  format: binary
+              required:
+                - urcapxFile
+        required: true
+      responses:
+        '201':
+          description: metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manifest'
+        default:
+          description: error response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /urcaps/{vendorID}/{urcapID}:
+    get:
+      tags:
+        - urcap
+      summary: Gets a urcap info by urcap ID's
+      description: TODO
+      operationId: getUrcapById
+      parameters:
+        - name: vendorID
+          in: path
+          description: vendorID of urcap defined in manifest
+          required: true
+          schema:
+            type: string
+        - name: urcapID
+          in: path
+          description: urcapID of urcap defined in manifest
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single urcap.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manifest'
+        default:
+          description: api error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+    put:
+      tags:
+        - urcap
+      summary: Updates a urcap info by ID's
+      description: |
+        This operation updates an exsisting urcap.
+      operationId: updateUrcapById
+      parameters:
+        - name: vendorID
+          in: path
+          description: vendorID of urcap defined in manifest
+          required: true
+          schema:
+            type: string
+        - name: urcapID
+          in: path
+          description: urcapID of urcap defined in manifest
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Updated urcap.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manifest'
+        default:
+          description: api error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+    delete:
+      tags:
+        - urcap
+      summary: Deletes a urcaps info by ID's
+      description: |
+        This operation uninstall a urcap.
+      operationId: deleteUrcapById
+      parameters:
+        - name: vendorID
+          in: path
+          description: vendorID of urcap defined in manifest
+          required: true
+          schema:
+            type: string
+        - name: urcapID
+          in: path
+          description: urcapID of urcap defined in manifest
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Updated urcap.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Manifest'
+        default:
+          description: api error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /containers/{vendorID}/{urcapID}/{artifactName}:
+    get:
+      tags:
+        - container
+      summary: Gets a container info by urcap ID's and artifactName
+      description: TODO
+      operationId: getContainerById
+      parameters:
+        - name: vendorID
+          in: path
+          description: vendorID of urcap defined in manifest
+          required: true
+          schema:
+            type: string
+        - name: urcapID
+          in: path
+          description: urcapID of urcap defined in manifest
+          required: true
+          schema:
+            type: string
+        - name: artifactName
+          in: path
+          description: artifact name of container defined in manifest
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A single container.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Container'
+        default:
+          description: api error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /containers/{vendorID}/{urcapID}/{artifactName}/start:
+    put:
+      tags:
+        - container
+      summary: Start a container
+      description: TODO
+      operationId: startContainerById
+      parameters:
+        - name: vendorID
+          in: path
+          description: vendorID of urcap defined in manifest
+          required: true
+          schema:
+            type: string
+        - name: urcapID
+          in: path
+          description: urcapID of urcap defined in manifest
+          required: true
+          schema:
+            type: string
+        - name: artifactName
+          in: path
+          description: artifact name of container defined in manifest
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        default:
+          description: api error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /containers/{vendorID}/{urcapID}/{artifactName}/stop:
+    put:
+      tags:
+        - container
+      summary: Stop a container
+      description: TODO
+      operationId: stopContainerById
+      parameters:
+        - name: vendorID
+          in: path
+          description: vendorID of urcap defined in manifest
+          required: true
+          schema:
+            type: string
+        - name: urcapID
+          in: path
+          description: urcapID of urcap defined in manifest
+          required: true
+          schema:
+            type: string
+        - name: artifactName
+          in: path
+          description: artifact name of container defined in manifest
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        default:
+          description: api error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /containers/{vendorID}/{urcapID}/{artifactName}/status:
+    put:
+      tags:
+        - container
+      summary: Status of a container
+      description: TODO
+      operationId: statusContainerById
+      parameters:
+        - name: vendorID
+          in: path
+          description: vendorID of urcap defined in manifest
+          required: true
+          schema:
+            type: string
+        - name: urcapID
+          in: path
+          description: urcapID of urcap defined in manifest
+          required: true
+          schema:
+            type: string
+        - name: artifactName
+          in: path
+          description: artifact name of container defined in manifest
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+        default:
+          description: api error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /containers/{vendorID}/{urcapID}/{artifactName}/portmapping:
+    get:
+      tags:
+        - container
+      summary: Port mapping of a container
+      description: Gets host port mapped to the container port
+      operationId: getContainerPortMappingById
+      parameters:
+        - name: vendorID
+          in: path
+          description: vendorID of urcap defined in manifest
+          required: true
+          schema:
+            type: string
+        - name: urcapID
+          in: path
+          description: urcapID of urcap defined in manifest
+          required: true
+          schema:
+            type: string
+        - name: artifactName
+          in: path
+          description: artifact name of container defined in manifest
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Container Port Mapping.
+        default:
+          description: api error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /containers/{vendorID}/{urcapID}/{artifactName}/validate:
+    get:
+      tags:
+        - container
+      summary: Validates container artifact presence
+      description: TODO
+      operationId: validateContainerById
+      parameters:
+        - name: vendorID
+          in: path
+          description: vendorID of urcap defined in manifest
+          required: true
+          schema:
+            type: string
+        - name: urcapID
+          in: path
+          description: urcapID of urcap defined in manifest
+          required: true
+          schema:
+            type: string
+        - name: artifactName
+          in: path
+          description: artifact name of container defined in manifest
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Container Port Mapping.
+        default:
+          description: api error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /containers/stop:
+    put:
+      tags:
+        - container
+      summary: Stops all containers
+      description: TODO
+      operationId: stopAllContainers
+      responses:
+        '200':
+          description: Container Port Mapping.
+        default:
+          description: api error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /artifacts/{artifactType}/info:
+    get:
+      tags:
+        - artifact
+      summary: Gets the urcap metadata from the resource path
+      description: TODO
+      operationId: getArtifactMetadataByPath
+      parameters:
+        - name: artifactType
+          in: path
+          description: The type of the artifact
+          required: true
+          schema:
+            type: string
+            enum:
+              - container
+              - polyscopeBundle
+              - webArchieve
+        - name: artifactPath
+          in: query
+          description: Path to the resource/artifact on host machine
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: URCap metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Metadata'
+        default:
+          description: api error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+  /artifacts/{artifactType}/name:
+    get:
+      tags:
+        - artifact
+      summary: Gets the actual name of an artifact from the resource path
+      description: TODO
+      operationId: getArtifactActualNameByPath
+      parameters:
+        - name: artifactType
+          in: path
+          description: The type of the artifact
+          required: true
+          schema:
+            type: string
+            enum:
+              - container
+              - polyscopeBundle
+              - webArchieve
+        - name: artifactPath
+          in: query
+          description: Path to the resource/artifact on host machine
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: artifact name
+          content:
+            application/json:
+              schema:
+                type: string
+        default:
+          description: api error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIError'
+servers:
+  - url: http://localhost:8181/api/v1
+components:
+  parameters:
+    vendorID:
+      name: vendorID
+      in: path
+      description: vendorID of urcap defined in manifest
+      required: true
+      schema:
+        type: string
+    urcapID:
+      name: urcapID
+      in: path
+      description: urcapID of urcap defined in manifest
+      required: true
+      schema:
+        type: string
+    artifactType:
+      name: artifactType
+      in: path
+      description: The type of the artifact
+      required: true
+      schema:
+        type: string
+        enum:
+          - container
+          - polyscopeBundle
+          - webArchieve
+    artifactName:
+      name: artifactName
+      in: path
+      description: artifact name of container defined in manifest
+      required: true
+      schema:
+        type: string
+    artifactPath:
+      name: artifactPath
+      in: query
+      description: Path to the resource/artifact on host machine
+      required: true
+      schema:
+        type: string
+  schemas:
+    APIError:
+      type: object
+      properties:
+        trace:
+          description: The UUID to uniquely identifying the request
+          type: string
+          example: 9daee671-916a-4678-850b-10b911f0236d
+          x-order: 0
+        statusCode:
+          description: HTTP status code used for the response
+          type: integer
+          format: uint16
+          example: 500
+          x-order: 1
+        errorCode:
+          $ref: '#/components/schemas/ErrorCode'
+        errorContext:
+          description: >-
+            This field contains a snake case string succiently identifying the
+            problem from api context.
+          type: string
+          example: installation_failed
+          x-order: 3
+          nullable: false
+        description:
+          description: This field contains description of the problem
+          type: string
+          x-order: 4
+        resolve:
+          description: This field explains a possible solution to the problem
+          type: string
+          example: >-
+            Please download urcapx file again and try installing again or
+            contact urcap developer
+          x-order: 5
+        moreInfo:
+          description: >-
+            This filed contains a publicly-accessible URL where information
+            about the error can be read in a web browser
+          type: string
+          format: url
+          example: https://docs.api.example.com/v2/urcaps/installation#corrupted_file
+          x-order: 6
+        errors:
+          description: List of errors
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+      required:
+        - apiContext
+        - errors
+    ErrorCode:
+      description: error code represents the code that can be used for translation of error
+      type: object
+      properties:
+        major:
+          description: API context
+          type: integer
+        minor:
+          description: error context
+          type: integer
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+          example: missing_field
+          description: >
+            Error codes.This field contains a string succinctly identifying    
+            the problem.
+          enum:
+            - success
+            - unknown
+            - internal_error
+            - invalid_file_extension
+            - invalid_file
+            - invalid_path
+            - not_found
+            - cannot_read
+            - zip_corrupted
+            - unzip_failed
+            - metadata_mismatch
+            - metadata_error
+            - metadata_yaml_syntax_error
+            - metadata_invalid
+            - unsupported_artifact_type
+            - missing_artifact
+            - invalid_artifact
+            - over_sized_artifact
+            - already_installed
+            - installation_failed
+            - already_started
+            - start_failed
+            - missing_field
+        message:
+          type: string
+          example: The `first_name` field is required.
+          description: >-
+            This field contain a plainly-written, developer-oriented explanation
+            of the solution to the problem in complete, well-formed sentences.
+        moreInfo:
+          type: string
+          format: url
+          example: https://docs.api.example.com/v2/users/create_user#first_name
+          description: >-
+            This field SHOULD contain a publicly-accessible URL where
+            information about the error can be read in a web browser.
+        target:
+          $ref: '#/components/schemas/ErrorTarget'
+      description: error model
+    ErrorTarget:
+      type: object
+      properties:
+        name:
+          type: string
+          example: field
+          description: This field the type of the value
+        value:
+          type: string
+          example: username
+          description: >-
+            This field MUST contain the name of the problematic field (with
+            dot-syntax if necessary), query parameter, or header.
+      description: >-
+        Error Target Model. This field MAY contain an error target model.
+        Otherwise, it MUST be omitted.
+    Manifest:
+      type: object
+      required:
+        - apiVersion
+        - metadata
+      properties:
+        apiVersion:
+          type: string
+          example: 1.0.0
+          description: >
+            Version (major.minor.patch) of the Manifest specification used.
+            Tools not implementing required version MUST reject the
+            configuration file. 
+          pattern: ^[a-zA-Z0-9._-]+$
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+        artifacts:
+          $ref: '#/components/schemas/Artifacts'
+      description: >
+        URCap Manifest Specification. The Manifest file is a YAML file defining
+        a multi-artifacts based urcap application. The Manifest.yaml file is
+        located on the top level directory/folder.
+    Metadata:
+      type: object
+      required:
+        - urcapID
+        - urcapName
+        - vendorID
+        - vendorName
+        - version
+      properties:
+        vendorID:
+          type: string
+          example: universal-robots
+          description: >
+            Company urcap developer ID. The ID is shared among all urcap
+            applications developed by company.
+          minLength: 2
+          maxLength: 27
+          pattern: ^[a-zA-Z0-9._-]+$
+        urcapID:
+          type: string
+          example: dockerdaemon
+          description: >
+            Urcap id for this application. The ID must be unique for each urcap
+            application developed by a company (vendorID).
+          minLength: 2
+          maxLength: 27
+          pattern: ^[a-zA-Z0-9._-]+$
+        version:
+          type: string
+          example: 1.0.0
+          description: |
+            Urcap version (major.minor.patch)
+          pattern: ^\d{1}.\d{1}.\d{1}$
+        vendorName:
+          type: string
+          example: Universal Robots
+          description: >
+            Urcap name of this application. This Will be displayed on user
+            interface.
+          minLength: 2
+          maxLength: 27
+          pattern: ^[a-zA-Z0-9_\-\s]+$
+        urcapName:
+          type: string
+          example: Docker Daemon
+          description: >
+            Urcap name of this application. This Will be displayed on user
+            interface.
+          minLength: 3
+          maxLength: 20
+          pattern: ^[a-zA-Z0-9_\-\s]+$
+        description:
+          type: string
+          example: Sample gripper URCap
+          description: Short description of urcap
+        copyright:
+          type: string
+          example: Copyright (c) 2009-2021 Universal Robots. All rights reserved.
+          description: Specifies copy rights for the urcap
+        license:
+          type: string
+          example: TODO
+          description: License of various software/hardware used while developing the urcap
+      description: Metadata of the urcap
+    Container:
+      type: object
+      required:
+        - image
+        - name
+      properties:
+        name:
+          type: string
+          example: daemon-cpp
+          description: Name of the container artifact
+        image:
+          type: string
+          description: >-
+            The image name:tag to be loaded. The loaded image should be found at
+            path name/name:tag
+        environment:
+          type: array
+          description: List of environment variables inside the container.
+          items:
+            $ref: '#/components/schemas/EnvironmentVariable'
+        ingress:
+          $ref: '#/components/schemas/Ingress'
+        hostaccess:
+          type: string
+          description: >
+            Container can communicate with host process through
+            hosthost.internal dns name. This setting requires special priviledge
+          enum:
+            - 'true'
+            - 'yes'
+            - 'on'
+            - '1'
+            - 'false'
+            - 'no'
+            - 'off'
+            - '0'
+        ports:
+          type: array
+          description: list of open ports on the container
+          items:
+            $ref: '#/components/schemas/Port'
+        volumeMounts:
+          type: array
+          description: List of volumeMounts to persist data.
+          items:
+            $ref: '#/components/schemas/volumeMount'
+        devices:
+          type: array
+          description: List of device to be mounted in container.
+          items:
+            $ref: '#/components/schemas/device'
+      description: |
+        All the properties related to container run.
+    Ingress:
+      type: object
+      required:
+        - name
+        - port
+      properties:
+        name:
+          type: string
+          example: rest-api
+          description: The ingress rule name. Logical name of ingress rule.
+          pattern: ^[a-zA-Z0-9_-]+$
+        port:
+          type: integer
+          format: uint32
+          example: 80
+          description: >
+            The container port number of http server. This is the port number on
+            the container of http server
+          minimum: 0
+          maximum: 61000
+        protocol:
+          type: string
+          example: websocket
+          description: >
+            The ingress protocol. Add this setting to select between http and
+            websocket - the later allowing connection upgrades
+          default: http
+          enum:
+            - http
+            - https
+            - websocket
+        proxyurl:
+          type: string
+          example: /shorturl
+          description: >
+            The proxy url forwarded to container. Select between short urls and
+            long urls arriving at the container backend. When short urls are
+            selected the matching prefix is removed from the url before
+            forwarding.
+          pattern: ^/([a-zA-Z0-9/_-]*)$
+          default: /original
+        masterIndex:
+          type: string
+          example: /index
+          description: |
+            The container should handle the master index.
+      description: >-
+        Container ingress configuration. Automatically configure ingress path
+        routing for ex. rest api.
+    EnvironmentVariable:
+      type: object
+      required:
+        - name
+        - value
+      properties:
+        name:
+          type: string
+          example: LOG_LEVEL
+          description: >
+            The container environment variable name. Convention is to use
+            capital letters with underscore delimiters.
+          pattern: ^[a-zA-Z0-9_]+$
+        value:
+          type: string
+          example: info
+          description: >
+            The container environment variable value. Any configuration
+            information required at runtime by urcap container.
+          pattern: ^.*$
+      description: Adds environment variables to the container
+    Port:
+      type: object
+      required:
+        - containerPort
+        - name
+      properties:
+        name:
+          type: string
+          example: xmlrpc
+          description: >
+            This is logical port name on docker host. Port name is resolved to
+            one of the available port number on the docker host and queried
+            using rest api. The logical_port on docker host is mapped to
+            containerPort on container
+          minLength: 2
+          maxLength: 27
+          pattern: ^[a-zA-Z0-9_-]+$
+        containerPort:
+          type: integer
+          format: int32
+          example: 40405
+          description: >
+            This is the port number on the container. The container port number
+            is mapped to port name on container host
+          minimum: 0
+          maximum: 61000
+        protocol:
+          type: string
+          description: >
+            Type of port mapping between the container host and container.
+            TCP(Default)/UDP
+          default: tcp
+          enum:
+            - udp
+            - tcp
+      description: >
+        These details are used to establish the connection between the docker
+        host and container
+    volumeMount:
+      type: object
+      required:
+        - mountPath
+      properties:
+        mountPath:
+          type: string
+          example: /gripper/data
+          description: >
+            Absolute path for the data folders to be mounted on container. This
+            folder is meant to have persistent data 
+          pattern: ^(/[^/]+)+(:(/[^/]+)+)?$
+        type:
+          type: string
+          example: tmpfs
+          description: >
+            Type of volume to mount. For tmpfs data will be lost following
+            restart where as persistent will keep data until urcap is
+            uninstalled.
+          enum:
+            - persistent
+            - tmpfs
+      description: >
+        Use to mount volumes into container. Data can be persistent or temporary
+        according to selected type
+    device:
+      type: object
+      required:
+        - device
+      properties:
+        name:
+          type: string
+          example: Dongle interface
+          description: |
+            The name of mapped device. Logical name of device
+        device:
+          type: string
+          example: /dev/ttyS[0-3]:/dev/serial:rw
+          description: >
+            The host device path : the containert device path. 
+
+            The physical device mapping between host and container. The host
+            part can contain regular expression if specific device is not known.
+          pattern: ^(/[^/]+)+:(/[^/]+)+(:[rwm]+)?$
+        description:
+          type: string
+          example: Select the serial port with dongle atthed
+          description: TODO
+      description: container device. Adds host device to container
+    WebArchive:
+      type: object
+      required:
+        - folder
+        - name
+      properties:
+        name:
+          type: string
+          example: mywebarchive
+          description: |
+            The name of the web archive
+          minLength: 2
+          maxLength: 27
+          pattern: ^[a-zA-Z0-9._-]+$
+        folder:
+          type: string
+          example: mywebarchive
+          description: >
+            Path of the folder with all web related pages. This path is relative
+            to the zipped urcap top folder. 
+          minLength: 3
+          maxLength: 20
+          pattern: ^[a-zA-Z0-9._-]+$
+        masterIndex:
+          type: string
+          description: Path to the main index pages for the front to load.
+      description: An web archive contains a folder with all web related pages.
+    PolyscopeBundle:
+      type: object
+      required:
+        - bundle
+        - name
+      properties:
+        name:
+          type: string
+          example: polyscope-ui
+          description: |
+            The name of the polyscope bundle. 
+          minLength: 2
+          maxLength: 27
+          pattern: ^[a-zA-Z0-9._-]+$
+        bundle:
+          type: string
+          example: polyscope-ui-1.0-SNAPSHOT.jar
+          description: >
+            The polyscope bundle path. Path to the jar file relative to the
+            zipped urcap top folder.
+          pattern: ^[a-zA-Z0-9._-]+(\.jar$)
+      description: Configuration for PolyscopeBundle artifact
+    Artifacts:
+      type: object
+      properties:
+        containers:
+          type: array
+          description: List of container artifacts
+          items:
+            $ref: '#/components/schemas/Container'
+        polyscopeBundles:
+          type: array
+          description: List of osgi polyscope bundles
+          items:
+            $ref: '#/components/schemas/PolyscopeBundle'
+        webArchives:
+          type: array
+          description: List of web archives
+          items:
+            $ref: '#/components/schemas/WebArchive'
+      description: >
+        All artifacts like containers, polyscopeBundle, webArchive that makes up
+        an urcap.
