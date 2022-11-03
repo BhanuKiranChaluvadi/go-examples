@@ -26,6 +26,9 @@ type Manifest struct {
 	// Pattern: ^[a-zA-Z0-9._-]+$
 	APIVersion string `json:"apiVersion" yaml:"apiVersion"`
 
+	// artifacts
+	Artifacts *Artifacts `json:"artifacts,omitempty" yaml:"artifacts,omitempty"`
+
 	// metadata
 	// Required: true
 	Metadata *Metadata `json:"metadata" yaml:"metadata"`
@@ -36,6 +39,10 @@ func (m *Manifest) Validate(formats strfmt.Registry) error {
 	var res []error
 
 	if err := m.validateAPIVersion(formats); err != nil {
+		res = append(res, err)
+	}
+
+	if err := m.validateArtifacts(formats); err != nil {
 		res = append(res, err)
 	}
 
@@ -57,6 +64,25 @@ func (m *Manifest) validateAPIVersion(formats strfmt.Registry) error {
 
 	if err := validate.Pattern("apiVersion", "body", m.APIVersion, `^[a-zA-Z0-9._-]+$`); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+func (m *Manifest) validateArtifacts(formats strfmt.Registry) error {
+	if swag.IsZero(m.Artifacts) { // not required
+		return nil
+	}
+
+	if m.Artifacts != nil {
+		if err := m.Artifacts.Validate(formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("artifacts")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("artifacts")
+			}
+			return err
+		}
 	}
 
 	return nil
@@ -86,6 +112,10 @@ func (m *Manifest) validateMetadata(formats strfmt.Registry) error {
 func (m *Manifest) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	var res []error
 
+	if err := m.contextValidateArtifacts(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
 	if err := m.contextValidateMetadata(ctx, formats); err != nil {
 		res = append(res, err)
 	}
@@ -93,6 +123,22 @@ func (m *Manifest) ContextValidate(ctx context.Context, formats strfmt.Registry)
 	if len(res) > 0 {
 		return errors.CompositeValidationError(res...)
 	}
+	return nil
+}
+
+func (m *Manifest) contextValidateArtifacts(ctx context.Context, formats strfmt.Registry) error {
+
+	if m.Artifacts != nil {
+		if err := m.Artifacts.ContextValidate(ctx, formats); err != nil {
+			if ve, ok := err.(*errors.Validation); ok {
+				return ve.ValidateName("artifacts")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("artifacts")
+			}
+			return err
+		}
+	}
+
 	return nil
 }
 

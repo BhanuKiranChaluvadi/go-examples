@@ -19,7 +19,6 @@ import (
 type Error struct {
 
 	// Error codes.This field contains a string succinctly identifying     the problem.
-	//
 	// Example: missing_field
 	Code string `json:"code,omitempty" yaml:"code,omitempty"`
 

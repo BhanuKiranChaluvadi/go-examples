@@ -20,7 +20,6 @@ import (
 type Metadata struct {
 
 	// Company urcap developer ID. The ID is shared among all urcap applications developed by company.
-	//
 	// Example: universal-robots
 	// Required: true
 	// Max Length: 27
@@ -29,7 +28,6 @@ type Metadata struct {
 	VendorID string `json:"vendorID" yaml:"vendorID"`
 
 	// Urcap id for this application. The ID must be unique for each urcap application developed by a company (vendorID).
-	//
 	// Example: dockerdaemon
 	// Required: true
 	// Max Length: 27
@@ -38,14 +36,12 @@ type Metadata struct {
 	UrcapID string `json:"urcapID" yaml:"urcapID"`
 
 	// Urcap version (major.minor.patch)
-	//
 	// Example: 1.0.0
 	// Required: true
 	// Pattern: ^\d{1}.\d{1}.\d{1}$
 	Version string `json:"version" yaml:"version"`
 
 	// Urcap name of this application. This Will be displayed on user interface.
-	//
 	// Example: Universal Robots
 	// Required: true
 	// Max Length: 27
@@ -54,7 +50,6 @@ type Metadata struct {
 	VendorName string `json:"vendorName" yaml:"vendorName"`
 
 	// Urcap name of this application. This Will be displayed on user interface.
-	//
 	// Example: Docker Daemon
 	// Required: true
 	// Max Length: 20
