@@ -41,5 +41,5 @@ properties:
     items:
       $ref: 'error.yaml'
 required:
-  - apiContext
+  - errorContext
   - errors
