@@ -24,7 +24,7 @@ import (
 func Build(urcapSRCPath, urcapDstPath string) (err error) {
 
 	// load manifest
-	manifest, err := ManifestLoad(path.Join(urcapSRCPath, "Manifest.yaml"))
+	manifest, err := manifestLoad(path.Join(urcapSRCPath, "manifest.yaml"))
 	if err != nil {
 		return err
 	}
