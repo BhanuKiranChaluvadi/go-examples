@@ -8,6 +8,7 @@ package cli
 import (
 	"encoding/json"
 	"fmt"
+	"urcapCli/models"
 
 	"github.com/go-openapi/swag"
 

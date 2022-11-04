@@ -7,7 +7,7 @@ package cli
 
 import (
 	"fmt"
-	"swagger-example/models"
+	"urcapCli/models"
 
 	"github.com/spf13/cobra"
 )

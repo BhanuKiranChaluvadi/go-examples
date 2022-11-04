@@ -1,4 +1,4 @@
-module swagger-example
+module urcapCli
 
 go 1.19
 
@@ -9,7 +9,7 @@ require (
 	github.com/go-openapi/swag v0.22.3
 	github.com/go-openapi/validate v0.22.0
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/spf13/cobra v0.0.3
+	github.com/spf13/cobra v1.6.1
 	github.com/spf13/viper v1.13.0
 )
 
@@ -24,7 +24,7 @@ require (
 	github.com/go-openapi/loads v0.21.1 // indirect
 	github.com/go-openapi/spec v0.20.4 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
-	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect

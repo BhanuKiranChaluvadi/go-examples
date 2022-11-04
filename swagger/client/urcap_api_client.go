@@ -10,9 +10,9 @@ import (
 	httptransport "github.com/go-openapi/runtime/client"
 	"github.com/go-openapi/strfmt"
 
-	"swagger-example/client/artifact"
-	"swagger-example/client/container"
-	"swagger-example/client/urcap"
+	"urcapCli/client/artifact"
+	"urcapCli/client/container"
+	"urcapCli/client/urcap"
 )
 
 // Default urcap API HTTP client.

@@ -1,0 +1,191 @@
+consumes:
+    - application/json
+produces:
+    - application/json
+schemes:
+    - http
+swagger: "2.0"
+info:
+    version: 1.0.0
+    description: API description for URCap SDK.
+    title: URCap SDK API
+    contact:
+        name: Universal Robots
+        url: https://www.universal-robots.com/
+        email: swpl@universal-robots.com
+    license:
+        name: Apache '2.0'
+        url: http://www.apache.org/licenses/LICENSE
+host: localhost:8182
+basePath: /api/v1
+paths:
+    /build:
+        get:
+            responses:
+                default:
+                    description: API error
+                    schema:
+                        $ref: '#/definitions/apiError'
+                "200":
+                    description: OK
+            description: Build's urcap given path to the urcap source folder containing manifest.yaml
+            tags:
+                - urcap
+            summary: Build urcap
+            operationId: build
+            parameters:
+                - type: string
+                  description: path to urcap source folder containing manifest.yaml
+                  name: path
+                  in: query
+                  required: true
+    /deploy:
+        post:
+            operationId: deploy
+            parameters:
+                - pattern: ^[a-zA-Z0-9._-]+(\.urcapx$)
+                  type: string
+                  description: path to built urcap file <urcap_name>.urcapx
+                  name: path
+                  in: query
+            responses:
+                "200":
+                    description: OK
+                default:
+                    description: API error
+                    schema:
+                        $ref: '#/definitions/apiError'
+            description: install new urcap given the path to the built urcap
+            tags:
+                - urcap
+            summary: install urcap
+    /validate:
+        get:
+            description: Validate built urcap given path to the build urcap file
+            tags:
+                - urcap
+            summary: Validate urcap
+            operationId: validate
+            parameters:
+                - name: path
+                  in: query
+                  pattern: ^[a-zA-Z0-9._-]+(\.urcapx$)
+                  type: string
+                  description: path to built urcap file <urcap_name>.urcapx
+            responses:
+                default:
+                    description: API error
+                    schema:
+                        $ref: '#/definitions/apiError'
+                "200":
+                    description: OK
+definitions:
+    apiError:
+        type: object
+        required:
+            - errorContext
+            - errors
+        properties:
+            description:
+                description: This field contains description of the problem
+                type: string
+                x-order: !!float 4
+            errorCode:
+                $ref: '#/definitions/errorCode'
+            errorContext:
+                example: installation_failed
+                description: This field contains a snake case string succiently identifying the problem from api context.
+                type: string
+                x-nullable: false
+                x-order: !!float 3
+            errors:
+                description: List of errors
+                type: array
+                items:
+                    $ref: '#/definitions/error'
+            moreInfo:
+                description: This filed contains a publicly-accessible URL where information about the error can be read in a web browser
+                type: string
+                format: url
+                x-order: !!float 6
+                example: https://docs.api.example.com/v2/urcaps/installation#corrupted_file
+            resolve:
+                type: string
+                x-order: !!float 5
+                example: Please download urcapx file again and try installing again or contact urcap developer
+                description: This field explains a possible solution to the problem
+            statusCode:
+                description: HTTP status code used for the response
+                type: integer
+                format: uint16
+                x-order: !!float 1
+                example: !!float 500
+            trace:
+                description: The UUID to uniquely identifying the request
+                type: string
+                x-order: !!float 0
+                example: 9daee671-916a-4678-850b-10b911f0236d
+    error:
+        description: api error
+        type: object
+        properties:
+            code:
+                description: Error codes.This field contains a string succinctly identifying     the problem.
+                type: string
+                x-nullable: false
+                x-order: !!float 0
+                example: missing_field
+            message:
+                description: This field contain a plainly-written, developer-oriented explanation of the solution to the problem in complete, well-formed sentences.
+                type: string
+                x-go-type:
+                    hints:
+                        kind: interface
+                    type: error
+                x-nullable: false
+                x-order: !!float 1
+                example: The `first_name` field is required.
+            more_info:
+                description: This field SHOULD contain a publicly-accessible URL where information about the error can be read in a web browser.
+                type: string
+                format: url
+                x-nullable: false
+                x-order: !!float 2
+                example: https://docs.api.example.com/v2/users/create_user#first_name
+            target:
+                $ref: '#/definitions/errorTarget'
+    errorCode:
+        type: object
+        properties:
+            minor:
+                description: error context
+                type: integer
+            major:
+                description: API context
+                type: integer
+    errorTarget:
+        description: Error Target Model. This field MAY contain an error target model. Otherwise, it MUST be omitted.
+        type: object
+        required:
+            - name
+            - value
+        properties:
+            name:
+                description: This field MUST contain field, parameter, or header
+                type: string
+                enum:
+                    - field
+                    - parameter
+                    - header
+                x-nullable: false
+                x-order: !!float 0
+                example: field
+            value:
+                example: username
+                description: This field MUST contain the name of the problematic field (with dot-syntax if necessary), query parameter, or header.
+                type: string
+                x-nullable: false
+                x-order: !!float 1
+tags:
+    - description: operations related to urcap
+      name: urcap

@@ -7,6 +7,7 @@ package cli
 
 import (
 	"fmt"
+	"urcapCli/models"
 
 	"github.com/go-openapi/swag"
 

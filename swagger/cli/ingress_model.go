@@ -8,7 +8,7 @@ package cli
 import (
 	"encoding/json"
 	"fmt"
-	"swagger-example/models"
+	"urcapCli/models"
 
 	"github.com/spf13/cobra"
 )

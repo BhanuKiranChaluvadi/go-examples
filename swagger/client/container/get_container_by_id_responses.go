@@ -12,7 +12,7 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
 
-	"swagger-example/models"
+	"urcapCli/models"
 )
 
 // GetContainerByIDReader is a Reader for the GetContainerByID structure.

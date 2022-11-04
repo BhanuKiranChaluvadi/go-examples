@@ -12,7 +12,7 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
 
-	"swagger-example/models"
+	"urcapCli/models"
 )
 
 // GetUrcapByIDReader is a Reader for the GetUrcapByID structure.

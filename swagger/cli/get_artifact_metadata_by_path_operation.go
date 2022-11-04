@@ -8,7 +8,7 @@ package cli
 import (
 	"encoding/json"
 	"fmt"
-	"swagger-example/client/artifact"
+	"urcapCli/client/artifact"
 
 	"github.com/go-openapi/swag"
 	"github.com/spf13/cobra"

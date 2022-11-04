@@ -12,7 +12,7 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
 
-	"swagger-example/models"
+	"urcapCli/models"
 )
 
 // StopAllContainersReader is a Reader for the StopAllContainers structure.
