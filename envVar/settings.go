@@ -17,5 +17,4 @@ func init() {
 		log.Printf("%s environment variable not set\n", INSTALLATION_PATH_ENV)
 	}
 	log.Printf("%s=%s\n", INSTALLATION_PATH_ENV, INSTALLATION_PATH)
-
 }
